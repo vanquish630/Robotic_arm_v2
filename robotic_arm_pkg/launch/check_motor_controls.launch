@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<launch>
+    
+	<group ns="/arm_mesh">
+  		<rosparam file="$(find robotic_arm_pkg)/config/controllers.yaml" command="load" ns="/arm_mesh"/>
+
+
+  		<node name="robot_hardware_interface" pkg="robotic_arm_pkg" type="robot_hardware_interface" output="screen"/>
+
+ <!--
+ 		 <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+   			 <param name="/use_gui" value="false"/>
+   			 <rosparam param="/source_list">[arm_mesh/joint_states]</rosparam>
+ 		 </node>
+-->
+
+  		<node name="rviz" pkg="rviz" type="rviz"/>
+
+ 		 <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robotic_arm_pkg)/urdf/arm_meshed.urdf'"/>
+
+ 		 <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  
+
+ 		 <node name="controller_spawner" pkg="controller_manager" type="spawner"
+            respawn="false" output="screen" ns="/arm_mesh"
+            args="
+            /arm_mesh/joint_state_controller
+            /arm_mesh/joint1_position_controller
+            /arm_mesh/joint2_position_controller
+            /arm_mesh/joint3_position_controller
+            /arm_mesh/joint4_position_controller
+            /arm_mesh/gripperbase_position_controller
+            "/>
+            
+
+          
+<!--
+ <rosparam file="$(find robotic_arm_pkg)/config/joint_state_controls.yaml" command="load"/>
+
+
+  <node name="joint_control_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/arm_mesh" args="joint_state_controller" />
+
+
+    <rosparam file="$(find robotic_arm_pkg)/config/joint_controls.yaml" command="load"/>
+
+    <node name="arm_control_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/arm_mesh" args="arm_control"/>
+
+
+    <include file="$(find robotic_arm_pkg)/launch/arm_bringup.launch" />
+
+
+  -->
+
+	</group>
+</launch>
