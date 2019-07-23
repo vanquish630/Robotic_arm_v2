@@ -34,7 +34,11 @@ float readbase=0,readshoulder=0,readelbow=0,readwrist1=0,readwrist2=0,readservo5
 
 void rotate_servo(int servo,int new_pos,int cur_pos,int dir)
 {
-
+  base.write(90);
+  shoulder.write(90);
+  elbow.write(90);
+  wrist1.write(90);
+  wrist2.write(0);
 }
 
 
@@ -95,12 +99,12 @@ void setup(){
   wrist2.write(0);
   //claw.write(0);
 
-  char *joint_names[] ={"base_link1","link1_link2","link2_link3","link3_link4","link4_gripperbase"};
+  char *joint_names[] ={"base_link1","link1_link2","link2_link3","link3_link4","link4_gripper_base"};
   float pos[5]; /// stores arduino time
   joint_state.name_length = 5;
   joint_state.position_length = 5;
   joint_state.name = joint_names;
-  //joint_state.header.frame_id = "link1";
+  //joint_state.header.frame_id = "base";
   joint_state.position = pos;
   nh.advertise(joint_pub);
 
@@ -135,5 +139,6 @@ joint_state.header.stamp = nh.now();
     joint_state.position[3] = 0;
     joint_state.position[4] = 0;
     joint_pub.publish(&joint_state);
+    delay(100);
   nh.spinOnce();
 }

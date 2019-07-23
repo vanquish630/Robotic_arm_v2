@@ -207,7 +207,7 @@
       </actuator>
     </transmission>
 
-    <link name = "gripper_base">
+   <link name = "gripper_base">
 			<visual>
 				<origin rpy="0 0 3.14" xyz = "0.1 0.095 0"/>
 				<geometry>
@@ -228,6 +228,7 @@
                 <inertia ixx="0.00156" ixy="0.0000274" ixz="-0.00001845" iyy="0.0016" iyz="0.000032" izz="0.0027"/>
             </inertial>
     </link>
+    <!-- 
 
  <joint name = "gripper_base_claw_L" type = "revolute">
 			<axis xyz= "1 0 0"/>
@@ -295,7 +296,7 @@
     <legacyModeNS>true</legacyModeNS>
     </plugin>
   </gazebo>
-
+-->
 
    
 

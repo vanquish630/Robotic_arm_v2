@@ -15,6 +15,7 @@
 #include <sensor_msgs/ChannelFloat32.h>
 #include <sensor_msgs/JointState.h>
 
+
 class ROBOTHardwareInterface : public hardware_interface::RobotHW 
 {
     public:
@@ -34,8 +35,8 @@ class ROBOTHardwareInterface : public hardware_interface::RobotHW
         hardware_interface::JointStateInterface joint_state_interface_;
         hardware_interface::PositionJointInterface position_joint_interface_;
 
-        joint_limits_interface::PositionJointSaturationInterface position_joint_saturation_interface_;
-        joint_limits_interface::PositionJointSoftLimitsInterface positionJointSoftLimitsInterface;
+        //joint_limits_interface::PositionJointSaturationInterface position_joint_saturation_interface_;
+       // joint_limits_interface::PositionJointSoftLimitsInterface positionJointSoftLimitsInterface;
         
         int num_joints_;
         std::string joint_names_[5];  
