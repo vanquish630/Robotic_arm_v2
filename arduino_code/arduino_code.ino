@@ -1,3 +1,7 @@
+
+//rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200
+
+
 #if (ARDUINO >= 100)
  #include <Arduino.h>
 #else
@@ -34,18 +38,14 @@ float readbase=0,readshoulder=0,readelbow=0,readwrist1=0,readwrist2=0,readservo5
 
 void rotate_servo(int servo,int new_pos,int cur_pos,int dir)
 {
-  base.write(90);
-  shoulder.write(90);
-  elbow.write(90);
-  wrist1.write(90);
-  wrist2.write(0);
+ 
 }
 
 
 
 int new_pos[5];
 void servo_cb( const rospy_tutorials::Floats& cmd_msg){
-  nh.loginfo("Command Received");
+ // nh.loginfo("Command Received");
   
  new_pos[0]=cmd_msg.data[0];
  new_pos[1]= cmd_msg.data[1];
@@ -96,8 +96,8 @@ void setup(){
   shoulder.write(90);
   elbow.write(90);
   wrist1.write(90);
-  wrist2.write(0);
-  //claw.write(0);
+  wrist2.write(90);
+  //claw.write(90);
 
   char *joint_names[] ={"base_link1","link1_link2","link2_link3","link3_link4","link4_gripper_base"};
   float pos[5]; /// stores arduino time
@@ -108,37 +108,53 @@ void setup(){
   joint_state.position = pos;
   nh.advertise(joint_pub);
 
+
+ // joint_state.header.stamp = nh.now();
+  
+    delay(100);
   
 }
 
 void loop(){
-  /*
-   //joint_state.header.stamp = nh.now();
-   int readshoulder=analogRead(A1);
-   int readelbow=analogRead(A2);
-   int readwrist=analogRead(A3);
-
-   int sd = map(readshoulder,117,432,0,180);
-   int ed = map(readelbow,114,430,0,180);
-   int wd = map(readwrist,116,444,0,180);
-   
-
-    float shoulder_angle = degree_to_rad(sd);
-    float elbow_angle=degree_to_rad(ed);
-    float wrist_angle=degree_to_rad(wd);
-    joint_state.position[0] = shoulder_angle-1.57;
-    joint_state.position[1] = elbow_angle-1.57;
-    joint_state.position[2] = wrist_angle-1.57;
-    joint_pub.publish(&joint_state);
-*/
-
-joint_state.header.stamp = nh.now();
-  joint_state.position[0] = 0;
+  
+   joint_state.header.stamp = nh.now();
+   //int readshoulder=analogRead(A1);
+   //int readelbow=analogRead(A2);
+   //int readwrist=analogRead(A3);
+   joint_state.position[0] = 0;
     joint_state.position[1] = 0;
     joint_state.position[2] = 0;
     joint_state.position[3] = 0;
     joint_state.position[4] = 0;
     joint_pub.publish(&joint_state);
+/*
+   int sd = constrain(map(readshoulder,110,438,0,180),0,180);
+   int ed = constrain(map(readelbow,114,430,0,180),0,180);
+   int wd = constrain(map(readwrist,116,444,0,180),0,180);
+   Serial.println(sd);
+   Serial.println(ed);
+   Serial.println(wd);
+   Serial.println();
+
+   int shoulder_angle = constrain(map(sd,0,180,-90,90),-90,90);
+   int elbow_angle=constrain(map(ed,0,180,-90,90),-90,90);
+   int wrist_angle=constrain(map(wd,0,180,-90,90),-90,90);
+
+   Serial.println(shoulder_angle);
+   Serial.println(elbow_angle);
+   Serial.println(wrist_angle);
+   Serial.println();
+
+    float shoulder_angle_rad = degree_to_rad(shoulder_angle);
+    float elbow_angle_rad=degree_to_rad(elbow_angle);
+    float wrist_angle_rad=degree_to_rad(wrist_angle);
+    joint_state.position[1] = shoulder_angle_rad;
+    joint_state.position[2] = elbow_angle_rad;
+    joint_state.position[3] = wrist_angle_rad;
+    joint_pub.publish(&joint_state);
     delay(100);
+    */
+
+
   nh.spinOnce();
 }
